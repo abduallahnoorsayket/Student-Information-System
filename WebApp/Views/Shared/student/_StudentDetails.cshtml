@@ -1,0 +1,25 @@
+﻿@model WebApp.Models.StudentViewModel
+<table>
+    <tr>
+        <th>Sl</th>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Age</th>
+        <th>Department</th>
+    </tr>
+    @{int sl = 0;}
+    @foreach (var student in Model.Students)
+    {
+    <tr>
+        <td>@(++sl)</td>
+        <td>@student.RollNo</td>
+        <td>@student.Name</td>
+        <td>@student.Address</td>
+        <td>@student.Age</td>
+        <td>@student.DepartmentId</td>
+    </tr>
+    }
+
+
+</table>

@@ -1,0 +1,124 @@
+﻿@*@model WebApp.Model.Model.Student*@
+@model WebApp.Models.StudentViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@*<!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Add</title>*@
+@section MyStyle
+{
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+}
+        
+    @*</head>
+    <body>*@
+<div>
+    <h2>Student Information  System</h2>
+
+    <form method="post">
+        <table>
+            <tr>
+                <td>Roll No:</td>
+                @*<td><input type="text" name="RollNo" value="@Model.RollNo" /></td>*@
+                <td>@Html.TextBox("RollNo", Model.RollNo)</td>
+                <td>@Html.ValidationMessageFor(c => c.RollNo)<label id="rollNoUnique"></label></td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(c => c.Name):</td>
+                @*<td><input type="text" name="Name" value="@Model.Name" /></td>*@
+                <td>@Html.TextBoxFor(c => c.Name, Model.Name)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Address:</td>
+                <td><input type="text" name="Address" value="@Model.Address" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Age:</td>
+                <td><input type="text" name="Age" value="@Model.Age" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Department:</td>
+                @*<td><input type="text" name="DepartmentId" value="@Model.DepartmentId" /></td>*@
+                <td>@Html.DropDownListFor(c => c.DepartmentId, Model.DepartmentSelectListItems)</td>
+                <td>   </td>
+            </tr>
+            <tr>
+                <td>SAVEE:</td>
+                <td><input type="submit" id="Save" value="Save" /></td>
+                <td>
+                    @if (ViewBag.Message != null)
+                    {
+                        <h2>@ViewBag.Message</h2>
+                    }
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    @{
+        Html.RenderPartial("~/Views/Shared/student/_StudentDetails.cshtml",Model );
+    }
+    
+</div>
+@section MyScripts
+{
+    @*<script src="~/Scripts/jquery-1.8.0.min.js"></script>*@
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#RollNo").focusout(function() {
+                var rollNo = $("#RollNo").val();
+                var jsonParameterData = { rollNo: rollNo };
+
+                // Ajax
+                $.ajax({
+                    url: "/student/RollNoIsExists",
+                    type: "POST",
+                    data: jsonParameterData,
+                    success: function(rollNoIsExists) {
+                        //alert("Ajax Requiest Sussecc!!!");
+                        $("#rollNoUnique").text("");
+                        if (rollNoIsExists) {
+                            $("#rollNoUnique").text("Exists");
+                            $("#RollNo").focus();
+                        }
+                    },
+                    error: function() {
+                        alert("Ajax Requiest Failed!!!");
+                    }
+                });
+            });
+
+        });
+    </script>
+}
+    
+    @*</body>
+    </html>*@

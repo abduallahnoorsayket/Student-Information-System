@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "StudentDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>StudentDetails</h2>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="form-horizontal">
+            <div class="form-group">
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label for="Department" class="control-label col-2">DepartmentTT</label>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DropDownList("Department", null, "--Select--", null)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label for="Student" class="control-label col-2">StudentTT</label>
+                    </div>
+                    <div class="col-md-6">
+                        <select id="Student">
+                            <option value="">--Select--</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                        <label for="Student" class="control-label col-2">Student</label>
+                    </div>
+                    <div class="col-md-6">
+                        <label id="RollNo"></label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @*//PartialView*@
+        <div class="col-md-12" id="StudentDetails">
+
+        </div>
+    </div>
+</div>
+@section MyScripts
+{
+
+    <script>
+        $(document).ready(function() {
+            $("#Department").change(function() {
+                var departmentId = $("#Department").val();
+                var jsonParameterData = { departmentId: departmentId };
+
+                // Ajax////   
+                $.ajax({
+                    url: "/student/GetStudentByDepartmentId",        
+                    type: "POST",
+                    data: jsonParameterData,
+                    success: function(students) {
+                        //alert("Ajax Requiest Sussecc!!!");
+                        $("#Student").empty();
+                        $("#Student").append('<option value="">--Select--</option>');
+                        $.each(students, function(key, value) {
+                            //alert("Id:" + value.Id + "Name:" + value.Name);
+                            
+                            $("#Student").append("<option value=" + value.Id +">"+value.Name+"</option>");
+                        });
+                    },
+                    error: function() {
+                        alert("Ajax Requiest Failed!!!");
+                    }
+                });
+            });
+
+            //PartialView
+            $("#Student").change(function () {
+                var studentId = $("#Student").val();
+                var jsonParameterData = { studentId: studentId };
+
+                // Ajax
+                $.ajax({
+                    url: "/student/GetStudentByRollNoId",
+                    type: "POST",
+                    data: jsonParameterData,
+                    success: function (studentPartial) {
+                        alert("Ajax Requiest Sussecc!!!");
+                        $("#StudentDetails").html(studentPartial);
+
+                    },
+                    error: function () {
+                        alert("Ajax Requiest Failed!!!");
+                    }
+                });
+            });
+
+
+            $("#Student").change(function () {
+                var studentId = $("#Student").val();
+                var jsonParameterData = { studentId: studentId };
+
+                // Ajax////   
+                $.ajax({
+                    url: "/student/GetStudentByRollNoId",
+                    type: "POST",
+                    data: jsonParameterData,
+                    success: function (data) {
+                        var rollNo = data[0].RollNo;
+                        $("#RollNo").text(rollNo);
+                        alert(rollNo);
+                    },
+                    error: function () {
+                        alert("Ajax Requiest Failed!!!");
+                    }
+                });
+            });
+            
+        });
+    </script>
+}

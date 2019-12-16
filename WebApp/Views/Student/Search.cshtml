@@ -1,0 +1,114 @@
+﻿@model WebApp.Models.StudentViewModel
+@*@{
+    Layout = null;
+}*@
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Student Information</h2>
+
+        <form method="post">
+            <table>
+                <tr>
+                    <td>Roll No:</td>
+                    @*<td><input type="text" name="RollNo" value="@Model.RollNo" /></td>*@
+                    <td>@Html.TextBox("RollNo", Model.RollNo)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(c => c.Name):</td>
+                    @*<td><input type="text" name="Name" value="@Model.Name" /></td>*@
+                    <td>@Html.TextBoxFor(c => c.Name, Model.Name)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td><input type="text" name="Address" value="@Model.Address" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Age:</td>
+                    <td><input type="text" name="Age" value="@Model.Age" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Department:</td>
+                    @*<td><input type="text" name="DepartmentId" value="@Model.DepartmentId" /></td>*@
+                    <td>@Html.DropDownListFor(c => c.DepartmentId, Model.DepartmentSelectListItems)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td><input type="submit" value="Search" /></td>
+                    <td>
+                        @if (ViewBag.Message != null)
+                        {
+                            <h2>@ViewBag.Message</h2>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <table>
+            <tr>
+                <th>Sl</th>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Age</th>
+                <th>Department</th>
+            </tr>
+            @{int sl = 0;}
+            @foreach (var student in Model.Students)
+            {
+                <tr>
+                    <td>@(++sl)</td>
+                    <td>@student.RollNo</td>
+                    <td>@student.Name</td>
+                    <td>@student.Address</td>
+                    <td>@student.Age</td>
+                    <td>@student.DepartmentId</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "Student", new { Id = student.Id }, null)
+                    </td>
+                </tr>
+            }
+
+
+        </table>
+
+    </div>
+</body>
+</html>

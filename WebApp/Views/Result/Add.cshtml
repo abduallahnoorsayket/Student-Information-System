@@ -1,0 +1,138 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h2>Student Result</h2>
+
+    <form method="post">
+        <div>
+            <h2>Student Information</h2>
+            <table>
+                <tr>
+                    <td>Student Name:</td>
+                    <td><input type="text" name="StudentName" /></td>
+
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div>
+            <h2>Result</h2>
+            <table>
+                <tr>
+                    <td>Subject:</td>
+                    <td><input type="text" id="Subject" /></td>
+
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Marks :</td>
+                    <td><input type="text" id="Marks" /></td>
+
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="button" id="add" value="Add" /></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table >
+
+                <thead>
+                <tr>
+                    <td>Sl</td>
+                    <td>Subject</td>
+                    <td>Marks</td>
+                </tr>
+                </thead>
+                <tbody id="ResultDetailsTable">
+                @*<tr>
+                    <td>Sl</td>
+                    <td>Subject</td>
+                    <td>Marks</td>
+                </tr>*@
+                </tbody>
+
+            </table>
+        </div>
+        <table>
+            <tr>
+                <td><input type="submit" value="Save" /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script src="~/Scripts/jquery-1.8.0.min.js"></script>
+<script>
+    
+    $(document).ready(function() {
+        var index = 0;
+
+        $('#add').click(function () {
+            var result = GetResultData();
+
+            var resultRow = GerResultRow(result);
+
+            $("#ResultDetailsTable").append(resultRow);
+            index++;
+        });
+
+        function GetResultData() {
+
+            var subject = $('#Subject').val();
+            var marks = $('#Marks').val();
+
+            return { Subject: subject, Marks: marks }
+        }
+
+        var sl = index;
+        function GerResultRow(result) {
+
+            var subjectHidden = "<input type='hidden' name='ResultDetailses[" + index + "].Subject' value='" + result.Subject + "'></div>";
+            var marksHidden = "<input type='hidden' name='ResultDetailses[" + index + "].Marks' value='" + result.Marks + "'></div>";
+
+            var startTr = "<tr>";
+            var slCell = "<td class='text-success'>" + (++sl) + "</td>";
+            var subjectCell = "<td class='text-success'>" + subjectHidden + result.Subject + "</td>";
+            var marksCell = "<td class='text-success'>" + marksHidden + result.Marks + "</td>";
+            var endTr = "</tr>";
+
+            return (startTr + slCell + subjectCell + marksCell + endTr);
+
+        }
+
+    });
+</script>
+
+</body>
+</html>
